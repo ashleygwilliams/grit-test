@@ -1,0 +1,21 @@
+name: grit-check
+on: 'push'
+jobs:
+  download:
+    name: check-download
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: clone code
+        uses: actions/checkout@v4
+        with:
+          submodules: false
+      - name: download grit
+        run: |
+           curl --proto '=https' --tlsv1.2 -LsSf https://github.com/getgrit/gritql/releases/latest/download/marzano-installer.sh | bash
+      - name: init
+        run: |
+          grit init
+      - name: check
+        run: |
+          grit check --github-actions

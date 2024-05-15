@@ -1,0 +1,26 @@
+name: grit-npm-check
+on: 'push'
+jobs:
+  download:
+    name: check-download
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: clone code
+        uses: actions/checkout@v4
+        with:
+          submodules: false
+      - name: setup node
+        uses: actions/setup-node@v4
+      - name: download grit
+        run: |
+            npm i @getgrit/cli -g
+      - name: --help
+        run: |
+          grit --help
+      - name: init
+        run: |
+          grit init
+      - name: check
+        run: |
+          grit check --github-actions
